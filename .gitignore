@@ -1,0 +1,6 @@
+# python packages virtual environment
+.venv
+.env
+
+# compiled code
+__pycache__
