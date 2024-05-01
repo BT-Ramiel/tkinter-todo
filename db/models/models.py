@@ -1,10 +1,11 @@
 from datetime import datetime
+from typing import List
 
 from sqlalchemy import CheckConstraint, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from Entities.BaseClass import Base
-from Utils.generateDataTypes import generate_uuid
+from db.models.BaseClass import Base
+from db.Utils.generateDataTypes import generate_uuid
 
 
 class User(Base):
@@ -13,6 +14,10 @@ class User(Base):
     id: Mapped[str] = mapped_column(primary_key=True, default=generate_uuid)
     username: Mapped[str] = mapped_column(String(30))
     password: Mapped[str] = mapped_column(String(100))
+
+    tasks: Mapped[List["Task"]] = relationship(
+        back_populates="user", cascade="all,delete"
+    )
 
     def __repr__(self) -> str:
         return f"User(id={self.id!r}, username={self.username!r}, password={self.password!r})"
@@ -28,12 +33,16 @@ class Task(Base):
         CheckConstraint("status IN ('pending','in_progress','completed')")
     )
     priority: Mapped[str] = mapped_column(
-        CheckConstraint("status IN ('normal','medium','high')")
+        CheckConstraint("priority IN ('normal','medium','high')")
     )
     due_date: Mapped[datetime]
 
-    user_id: Mapped[str] = mapped_column(ForeignKey("user.id"))
+    user_id: Mapped[str] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
     user: Mapped["User"] = relationship(foreign_keys=[user_id])
+
+    task_comments: Mapped[List["TaskComment"]] = relationship(
+        back_populates="task", cascade="all,delete"
+    )
 
     def __repr__(self) -> str:
         return f"Task(id={self.id!r}, title={self.title!r}, description={self.description!r}, status={self.status!r}, priority={self.priority!r}, due_date={self.due_date!r}, user id={self.user_id!r})"
@@ -45,7 +54,7 @@ class TaskComment(Base):
     id: Mapped[str] = mapped_column(primary_key=True)
     comment: Mapped[str] = mapped_column(String(200))
 
-    task_id: Mapped[str] = mapped_column(ForeignKey("task.id"))
+    task_id: Mapped[str] = mapped_column(ForeignKey("task.id", ondelete="CASCADE"))
     task: Mapped["Task"] = relationship(foreign_keys=[task_id])
 
     def __repr__(self) -> str:
