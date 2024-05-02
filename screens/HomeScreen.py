@@ -1,5 +1,6 @@
 import tkinter as tk
 
+from components.MainMenu import MainMenu
 from style import styles
 
 
@@ -11,6 +12,8 @@ class HomeScreen(tk.Frame):
         self.init_widgets()
 
     def init_widgets(self):
-        tk.Label(self, text="Create task", justify=tk.CENTER, **styles.STYLE).pack(
+        tk.Label(self, text="Welcome", justify=tk.CENTER, **styles.STYLE).pack(
             **styles.PACK
         )
+
+        MainMenu(self, self.manager).pack(**styles.PACK)

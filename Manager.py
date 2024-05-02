@@ -1,6 +1,7 @@
 import tkinter as tk
 
 from Controller import Controller
+from screens.AddTaskScreen import AddTaskScreen
 from screens.HomeScreen import HomeScreen
 from style import styles
 
@@ -17,7 +18,7 @@ class Manager(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         self.frames = {}
 
-        for screen in (HomeScreen,):
+        for screen in (HomeScreen, AddTaskScreen):
             frame = screen(container, self)
             self.frames[screen] = frame
             frame.grid(row=0, column=0, sticky=tk.NSEW)
@@ -27,3 +28,6 @@ class Manager(tk.Tk):
     def show_frame(self, container):
         frame = self.frames[container]
         frame.tkraise()
+
+    def from_HomeScreen_to_AddTaskScreen(self):
+        self.show_frame(AddTaskScreen)
