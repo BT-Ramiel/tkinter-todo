@@ -14,7 +14,7 @@ class MainMenu(tk.Frame):
         tk.Button(
             self,
             text="Create task",
-            command=self.manager.from_HomeScreen_to_AddTaskScreen,
+            command=self.manager.to_AddTaskScreen,
             **styles.STYLE,
             relief=tk.FLAT,
             activebackground=styles.BACKGROUND,

@@ -29,5 +29,5 @@ class Manager(tk.Tk):
         frame = self.frames[container]
         frame.tkraise()
 
-    def from_HomeScreen_to_AddTaskScreen(self):
+    def to_AddTaskScreen(self):
         self.show_frame(AddTaskScreen)
